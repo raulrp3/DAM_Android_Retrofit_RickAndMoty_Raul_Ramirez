@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Retrofit_RickAndMorty</string>
+    <string name="get_characters">Get Characters</string>
+</resources>
