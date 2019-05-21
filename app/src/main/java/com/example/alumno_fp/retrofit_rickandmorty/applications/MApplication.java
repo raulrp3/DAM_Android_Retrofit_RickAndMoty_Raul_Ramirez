@@ -2,6 +2,7 @@ package com.example.alumno_fp.retrofit_rickandmorty.applications;
 
 import android.app.Application;
 
+import com.example.alumno_fp.retrofit_rickandmorty.utils.Utils;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,7 +13,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MApplication extends Application {
 
     private static Retrofit retrofit = null;
-    private final String BASE_URL = "https://rickandmortyapi.com/api/";
 
     @Override
     public void onCreate() {
@@ -24,7 +24,7 @@ public class MApplication extends Application {
                     .create();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(Utils.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
         }
