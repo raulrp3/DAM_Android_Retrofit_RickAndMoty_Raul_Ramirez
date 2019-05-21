@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.alumno_fp.retrofit_rickandmorty.R;
+import com.example.alumno_fp.retrofit_rickandmorty.interfaces.CustomClick;
 import com.example.alumno_fp.retrofit_rickandmorty.models.Character;
 
 import java.util.List;
@@ -34,17 +35,26 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
 
     List<Character> characters;
     Context context;
+    CustomClick listener;
 
-    public CharacterAdapter(List<Character> characters, Context context){
+    public CharacterAdapter(List<Character> characters, Context context, CustomClick listener){
         this.characters = characters;
         this.context = context;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
     public CharacterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_character, viewGroup, false);
-        final CharacterViewHolder chv = new CharacterViewHolder(v);
+        final View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_character, viewGroup, false);
+        final CharacterViewHolder chv = new CharacterViewHolder(view);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClick(view, chv.getAdapterPosition());
+            }
+        });
 
         return chv;
     }

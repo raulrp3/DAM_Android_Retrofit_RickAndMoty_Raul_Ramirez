@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.alumno_fp.retrofit_rickandmorty.adapters.CharacterAdapter;
 import com.example.alumno_fp.retrofit_rickandmorty.applications.MApplication;
 import com.example.alumno_fp.retrofit_rickandmorty.interfaces.CharacterService;
+import com.example.alumno_fp.retrofit_rickandmorty.interfaces.CustomClick;
 import com.example.alumno_fp.retrofit_rickandmorty.models.Character;
 import com.example.alumno_fp.retrofit_rickandmorty.models.CharacterFeed;
 import com.google.gson.FieldNamingPolicy;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView rv;
     private Button buttonGet;
     private Retrofit retrofit;
+    private CharacterService characterService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,15 +61,35 @@ public class MainActivity extends AppCompatActivity {
         rv.setHasFixedSize(true);
 
         data = new ArrayList<>();
-        characterAdapter = new CharacterAdapter(data, MainActivity.this);
+        characterAdapter = new CharacterAdapter(data, MainActivity.this, new CustomClick() {
+            @Override
+            public void onClick(View view, int index) {
+                int id = data.get(index).getId();
+                Call<Character> call = characterService.getCharactetById(id);
+
+                call.enqueue(new Callback<Character>() {
+                    @Override
+                    public void onResponse(Call<Character> call, Response<Character> response) {
+                        if (response.isSuccessful()){
+                            Character character = response.body();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Character> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
         rv.setAdapter(characterAdapter);
+        characterService = retrofit.create(CharacterService.class);
 
         buttonGet = findViewById(R.id.button_get);
     }
 
     private void loadJson(){
 
-        CharacterService characterService = retrofit.create(CharacterService.class);
         Call<CharacterFeed> call = characterService.getData();
 
         call.enqueue(new Callback<CharacterFeed>() {
@@ -75,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<CharacterFeed> call, Response<CharacterFeed> response) {
                 if (response.isSuccessful()){
                     CharacterFeed feed = response.body();
-                    Log.i("Resultado", feed.getResults().toString());
                     data.addAll(feed.getResults());
                     characterAdapter.notifyDataSetChanged();
                 }
