@@ -1,6 +1,8 @@
 
 package com.example.alumno_fp.retrofit_rickandmorty.models;
 
+import com.google.gson.Gson;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,6 +143,12 @@ public class Character {
 
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
+    }
+
+    public String toJson(){
+        Gson gson = new Gson();
+        String json = gson.toJson(this);
+        return json;
     }
 
     @Override

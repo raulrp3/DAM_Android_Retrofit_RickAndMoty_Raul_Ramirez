@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(Call<Character> call, Response<Character> response) {
                         if (response.isSuccessful()){
                             Character character = response.body();
+                            String characterJson = character.toJson();
+                            Log.i("Resultado", characterJson);
                         }
                     }
 
