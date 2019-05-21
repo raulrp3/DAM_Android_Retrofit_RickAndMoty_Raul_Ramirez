@@ -34,6 +34,8 @@ public class Character {
 
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
+    public Character() {
+    }
 
     public Integer getId() {
         return id;
@@ -149,6 +151,11 @@ public class Character {
         Gson gson = new Gson();
         String json = gson.toJson(this);
         return json;
+    }
+
+    public Character fromJson(String json){
+        Gson gson = new Gson();
+        return gson.fromJson(json, Character.class);
     }
 
     @Override

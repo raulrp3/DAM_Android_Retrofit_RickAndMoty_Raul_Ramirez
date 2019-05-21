@@ -1,5 +1,6 @@
 package com.example.alumno_fp.retrofit_rickandmorty;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -73,7 +74,9 @@ public class MainActivity extends AppCompatActivity {
                         if (response.isSuccessful()){
                             Character character = response.body();
                             String characterJson = character.toJson();
-                            Log.i("Resultado", characterJson);
+                            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                            intent.putExtra("Character", characterJson);
+                            startActivity(intent);
                         }
                     }
 
