@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.alumno_fp.retrofit_rickandmorty.adapters.CharacterAdapter;
+import com.example.alumno_fp.retrofit_rickandmorty.applications.MApplication;
 import com.example.alumno_fp.retrofit_rickandmorty.interfaces.CharacterService;
 import com.example.alumno_fp.retrofit_rickandmorty.models.Character;
 import com.example.alumno_fp.retrofit_rickandmorty.models.CharacterFeed;
@@ -32,12 +33,14 @@ public class MainActivity extends AppCompatActivity {
     private CharacterAdapter characterAdapter;
     private RecyclerView rv;
     private Button buttonGet;
-    private final String BASE_URL = "https://rickandmortyapi.com/api/";
+    private Retrofit retrofit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        retrofit = MApplication.getDefaultInstance();
 
         initUI();
 
@@ -63,14 +66,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadJson(){
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
 
         CharacterService characterService = retrofit.create(CharacterService.class);
         Call<CharacterFeed> call = characterService.getData();
