@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadJson(){
-
+        data.clear();
         Call<CharacterFeed> call = characterService.getData();
 
         call.enqueue(new Callback<CharacterFeed>() {
